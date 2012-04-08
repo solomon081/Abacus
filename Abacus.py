@@ -2,10 +2,8 @@ import sublime, sublime_plugin, re, sys
 from string import Template
 
 class AbacusCommand(sublime_plugin.TextCommand):
-    """
-        Main entry point. Find candidates for alignment,
-        calculate appropriate column widths, and then
-        perform a series of replacements.
+    """Main entry point. Find candidates for alignment, calculate appropriate column widths, and then
+    perform a series of replacements.
     """
     def run(self, edit):
         candidates  = []
@@ -78,9 +76,7 @@ class AbacusCommand(sublime_plugin.TextCommand):
         return sorted(separators, key=lambda sep: -len(sep["token"]))
 
     def find_candidates_for_separator(self, separator, candidates):
-        """
-            Given a particular separator, loop through every
-            line in the current selection looking for it and
+        """Given a particular separator, loop through every line in the current selection looking for it and
             add unique matches to a list.
         """
         debug               = self.view.settings().get("com.khiltd.abacus.debug")
@@ -157,11 +153,8 @@ class AbacusCommand(sublime_plugin.TextCommand):
         candidates.extend(new_candidates)
 
     def calc_left_col_width(self, candidates):
-        """
-            Given a list of lines we've already matched against
-            one or more separators, loop through them all to
-            normalize their indentation and determine the minimum
-            possible column width that will accomodate them all
+        """Given a list of lines we've already matched against one or more separators, loop through them all to
+            normalize their indentation and determine the minimum possible column width that will accomodate them all
             when aligned to a tab stop boundary.
         """
         max_width           = 0
@@ -182,26 +175,17 @@ class AbacusCommand(sublime_plugin.TextCommand):
     
     @property
     def tab_width(self):
-        """
-            Exceptionally inefficient
-        """
+        """Exceptionally inefficient"""
         return int(self.view.settings().get('tab_size', 4))
 
     def detab(self, input):
-        """
-            Goodbye tabs!
-        """
+        """Goodbye tabs!"""
         return input.expandtabs(self.tab_width)
         
     def region_from_line_number(self, line_number):
-        """
-            Given a zero-based line number, return a region 
-            encompassing it (including the newline).
-        """
+        """Given a zero-based line number, return a region encompassing it (including the newline)."""
         return self.view.full_line(self.view.text_point(line_number, 0))
 
     def snap_to_next_boundary(self, value, interval):
-        """
-            Alignment voodoo
-        """
+        """Alignment voodoo"""
         return value + (interval - value % interval)
